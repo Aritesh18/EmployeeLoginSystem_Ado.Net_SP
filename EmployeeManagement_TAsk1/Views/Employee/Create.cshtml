@@ -1,0 +1,29 @@
+﻿@model EmployeeManagement_TAsk1.Models.Employee
+
+@using (Html.BeginForm("Create", "Employee", FormMethod.Post))
+{
+    @Html.LabelFor(m => m.FirstName)
+    @Html.TextBoxFor(m => m.FirstName)
+    @Html.ValidationMessageFor(m => m.FirstName)
+
+    @Html.LabelFor(m => m.LastName)
+    @Html.TextBoxFor(m => m.LastName)
+    @Html.ValidationMessageFor(m => m.LastName)
+
+    @Html.LabelFor(m => m.Email)
+    @Html.TextBoxFor(m => m.Email)
+    @Html.ValidationMessageFor(m => m.Email)
+
+    @Html.LabelFor(m => m.Mobile)
+    @Html.TextBoxFor(m => m.Mobile)
+    @Html.ValidationMessageFor(m => m.Mobile)
+
+    @Html.LabelFor(m => m.Address)
+    @Html.TextBoxFor(m => m.Address)
+    @Html.ValidationMessageFor(m => m.Address)
+
+    @*<input type="submit" value="Add Employee" />*@
+   
+            <input type="submit" value="Create" class="btn btn-primary" />
+        
+        }
