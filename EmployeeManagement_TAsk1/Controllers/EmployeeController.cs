@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -39,7 +41,6 @@ namespace EmployeeManagement_TAsk1.Controllers
             ViewBag.EmployeeData = jsonData;
             return View(employees);
         }
-
         public IEnumerable<Employee> GetAllEmployee()
         {
             List<Employee> lstEmployee = new List<Employee>();
@@ -66,53 +67,78 @@ namespace EmployeeManagement_TAsk1.Controllers
             }
             return lstEmployee;
         }
-        //[HttpGet]
-        //[Authorize]
-        //public IActionResult Index(int pageIndex = 1, int pageSize = 5)
+        [HttpPost]
+        public IActionResult ExportToExcel(int[] selectedEmployees)
+        {
+            IEnumerable<Employee> employees = GetAllEmployee().Where(e => selectedEmployees.Contains(e.Id));
+
+            // Create the Excel workbook and worksheet
+            var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Selected Employees");
+
+            // Set column headers
+            PropertyInfo[] properties = typeof(Employee).GetProperties();
+            for (int i = 0; i < properties.Length; i++)
+            {
+                worksheet.Cell(1, i + 1).Value = properties[i].Name;
+            }
+
+            // Add data rows
+            int row = 2;
+            foreach (var employee in employees)
+            {
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    var value = properties[i].GetValue(employee);
+                    worksheet.Cell(row, i + 1).Value = value != null ? value.ToString() : string.Empty;
+                }
+                row++;
+            }
+
+            // Set response headers for file download
+            using (var memoryStream = new MemoryStream())
+            {
+                workbook.SaveAs(memoryStream);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SelectedEmployees.xlsx");
+            }
+        }
+        //public IActionResult ExportSelectedToExcel(int[] selectedEmployees)
         //{
-        //    IEnumerable<Employee> employees = GetAllEmployee(pageIndex, pageSize);
-        //    string jsonData = JsonConvert.SerializeObject(employees);
-        //    ViewBag.EmployeeData = jsonData;
+        //    IEnumerable<Employee> employees = GetAllEmployee().Where(e => selectedEmployees.Contains(e.Id));
 
-        //    // Pass pagination information to the view
-        //    ViewBag.PageIndex = pageIndex;
-        //    ViewBag.PageSize = pageSize;
+        //    Create the Excel workbook and worksheet
+        //    var workbook = new ClosedXML.Excel.XLWorkbook();
+        //    var worksheet = workbook.Worksheets.Add("Selected Employees");
 
-        //    return View(employees);
-        //}
-
-        //public IEnumerable<Employee> GetAllEmployee(int pageIndex, int pageSize)
-        //{
-        //    List<Employee> lstEmployee = new List<Employee>();
-        //    using (SqlConnection con = new SqlConnection(connectionString))
+        //    Set column headers
+        //   PropertyInfo[] properties = typeof(Employee).GetProperties();
+        //    for (int i = 0; i < properties.Length; i++)
         //    {
-        //        SqlCommand cmd = new SqlCommand("spGetAllEmployee", con);
-        //        cmd.CommandType = CommandType.StoredProcedure;
-
-        //        // Add pagination parameters
-        //        cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
-        //        cmd.Parameters.AddWithValue("@PageSize", pageSize);
-
-        //        con.Open();
-        //        SqlDataReader rdr = cmd.ExecuteReader();
-
-        //        while (rdr.Read())
-        //        {
-        //            Employee employee = new Employee();
-        //            employee.Id = Convert.ToInt32(rdr["Id"]);
-        //            employee.FirstName = rdr["FirstName"].ToString();
-        //            employee.LastName = rdr["LastName"].ToString();
-        //            employee.Email = rdr["Email"].ToString();
-        //            employee.Mobile = rdr["Mobile"].ToString();
-        //            employee.Address = rdr["Address"].ToString();
-
-        //            lstEmployee.Add(employee);
-        //        }
-        //        con.Close();
+        //        worksheet.Cell(1, i + 1).Value = properties[i].Name;
         //    }
-        //    return lstEmployee;
-        //}
 
+        //    Add data rows
+        //    int row = 2;
+        //    foreach (var employee in employees)
+        //    {
+        //        for (int i = 0; i < properties.Length; i++)
+        //        {
+        //            var value = properties[i].GetValue(employee);
+        //            worksheet.Cell(row, i + 1).Value = value != null ? value.ToString() : string.Empty;
+        //        }
+        //        row++;
+        //    }
+
+        //    Set response headers for file download
+        //    using (var memoryStream = new MemoryStream())
+        //        {
+        //            workbook.SaveAs(memoryStream);
+        //            memoryStream.Seek(0, SeekOrigin.Begin);
+        //            return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SelectedEmployees.xlsx");
+        //        }
+        //}
+      
         public Employee GetEmployeeById(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -267,9 +293,6 @@ namespace EmployeeManagement_TAsk1.Controllers
             }
             ModelState.AddModelError("", "Invalid login attempt");
             return View(user);
-
-
-
         }
         [HttpPost]
         public ActionResult Logout()
@@ -277,39 +300,5 @@ namespace EmployeeManagement_TAsk1.Controllers
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Employee");
         }
-//        [HttpPost]
-//        public IActionResult Create(Employee employee)
-//        {
-//            // Your code for creating a new employee
-//            return RedirectToAction("Index");
-//        }
-
-//        //public IActionResult Update(int id)
-//        //{
-//        //    // Your code for retrieving and showing the employee details in the view
-//        //}
-
-//        [HttpPost]
-//        public IActionResult Update(Employee employee)
-//        {
-//            // Your code for updating the employee
-//            return RedirectToAction("Index");
-//        }
-
-//        //public IActionResult Delete(int id)
-//        //{
-//        //    // Your code for retrieving and showing the employee details in the view
-//        //}
-
-//        [HttpPost]
-//        public IActionResult DeleteConfirmed(int id)
-//        {
-//            // Your code for deleting the employee
-//            return RedirectToAction("Index");
-//        }
-
-
-
-
    }
 }

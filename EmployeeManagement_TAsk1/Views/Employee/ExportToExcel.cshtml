@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Employee>
+
+@{
+    ViewData["Title"] = "Export Employees to Excel";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form id="exportForm" method="post">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Address</th>
+                <th>Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.Mobile</td>
+                    <td>@employee.Address</td>
+                    <td><input type="checkbox" name="selectedEmployees" value="@employee.Id" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button id="exportBtn" type="button">Export to Excel</button>
+</form>
+
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 CDN -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Export selected records to Excel
+            $('#exportBtn').on('click', function () {
+                var selectedEmployees = [];
+                $('input[name="selectedEmployees"]:checked').each(function () {
+                    selectedEmployees.push($(this).val());
+                });
+
+                if (selectedEmployees.length === 0) {
+                    Swal.fire('Error', 'Please select at least one employee.', 'error');
+                    return;
+                }
+
+                var form = $('#exportForm');
+                form.append('<input type="hidden" name="selectedEmployees" value="' + selectedEmployees.join(',') + '" />');
+                form.attr('action', '@Url.Action("ExportToExcel", "Employee")');
+                form.submit();
+            });
+        });
+    </script>
+}
