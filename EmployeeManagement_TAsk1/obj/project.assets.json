@@ -36,6 +36,15 @@
           "lib/netstandard2.1/ClosedXML.dll": {}
         }
       },
+      "Dapper/2.0.138": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/Dapper.dll": {}
+        }
+      },
       "DocumentFormat.OpenXml/2.20.0": {
         "type": "package",
         "dependencies": {
@@ -2370,6 +2379,24 @@
         "lib/netstandard2.1/ClosedXML.dll",
         "lib/netstandard2.1/ClosedXML.xml",
         "nuget-logo.png"
+      ]
+    },
+    "Dapper/2.0.138": {
+      "sha512": "QfnstG3t1hQVKCwVDaMjK72O+B+Ognfcf5fYOFI60ELpxuwE0WGtaOOwqczcuPgU3QEDXq/3TTvOilCvwszRhg==",
+      "type": "package",
+      "path": "dapper/2.0.138",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Dapper.png",
+        "dapper.2.0.138.nupkg.sha512",
+        "dapper.nuspec",
+        "lib/net461/Dapper.dll",
+        "lib/net461/Dapper.xml",
+        "lib/net5.0/Dapper.dll",
+        "lib/net5.0/Dapper.xml",
+        "lib/netstandard2.0/Dapper.dll",
+        "lib/netstandard2.0/Dapper.xml"
       ]
     },
     "DocumentFormat.OpenXml/2.20.0": {
@@ -7833,6 +7860,7 @@
   "projectFileDependencyGroups": {
     "net5.0": [
       "ClosedXML >= 0.101.0",
+      "Dapper >= 2.0.138",
       "DocumentFormat.OpenXml >= 2.20.0",
       "Microsoft.Graph >= 5.13.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
@@ -7886,6 +7914,10 @@
           "ClosedXML": {
             "target": "Package",
             "version": "[0.101.0, )"
+          },
+          "Dapper": {
+            "target": "Package",
+            "version": "[2.0.138, )"
           },
           "DocumentFormat.OpenXml": {
             "target": "Package",

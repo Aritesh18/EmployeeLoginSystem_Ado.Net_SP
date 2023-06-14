@@ -34,6 +34,7 @@
       "EmployeeManagement_TAsk1/1.0.0": {
         "dependencies": {
           "ClosedXML": "0.101.0",
+          "Dapper": "2.0.138",
           "DocumentFormat.OpenXml": "2.20.0",
           "Microsoft.Graph": "5.13.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.2",
@@ -361,6 +362,17 @@
         },
         "compile": {
           "lib/netstandard2.1/ClosedXML.dll": {}
+        }
+      },
+      "Dapper/2.0.138": {
+        "runtime": {
+          "lib/net5.0/Dapper.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.138.25557"
+          }
+        },
+        "compile": {
+          "lib/net5.0/Dapper.dll": {}
         }
       },
       "DocumentFormat.OpenXml/2.20.0": {
@@ -3773,6 +3785,13 @@
       "sha512": "sha512-PHirYTGFZ0a9MGXzZi6zrICrlKV7zdhtKMnto0gv+nqPpfX8mt/u/hw8st+0vPdgAxrpfXz9JCpRLueJc7blUw==",
       "path": "closedxml/0.101.0",
       "hashPath": "closedxml.0.101.0.nupkg.sha512"
+    },
+    "Dapper/2.0.138": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QfnstG3t1hQVKCwVDaMjK72O+B+Ognfcf5fYOFI60ELpxuwE0WGtaOOwqczcuPgU3QEDXq/3TTvOilCvwszRhg==",
+      "path": "dapper/2.0.138",
+      "hashPath": "dapper.2.0.138.nupkg.sha512"
     },
     "DocumentFormat.OpenXml/2.20.0": {
       "type": "package",

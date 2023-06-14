@@ -26,25 +26,7 @@
                 <th class="sortable" data-column="Actions">Actions</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <input type="checkbox" name="selectedEmployees" value="@item.Id" />
-                    </td>
-                    <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.LastName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Mobile)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                    <td>
-                        @Html.ActionLink("Update", "Update", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
-                </tr>
-            }
-        </tbody>
+        <tbody></tbody>
     </table>
 </form>
 
@@ -56,13 +38,43 @@
     <script>
         $(document).ready(function () {
             $('#employeeTable').DataTable({
-                "pageLength": 10 
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "@Url.Action("GetEmployees", "Employee")",
+                    "type": "POST"
+                },
+                "columns": [
+                    { "data": null },
+                    { "data": "FirstName" },
+                    { "data": "LastName" },
+                    { "data": "Email" },
+                    { "data": "Mobile" },
+                    { "data": "Address" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return '<a href="/Employee/Update/' + row.Id + '">Update</a> | ' +
+                                '<a href="/Employee/Delete/' + row.Id + '">Delete</a>';
+                        }
+                    }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": 0,
+                        "orderable": false,
+                        "render": function (data, type, row) {
+                            return '<input type="checkbox" name="selectedEmployees" value="' + row.Id + '" />';
+                        }
+                    }
+                ],
+                "pageLength": 10
             });
 
             $('#selectAll').on('click', function () {
                 $('input[name="selectedEmployees"]').prop('checked', this.checked);
             });
-           
+
             $('#exportSelected').on('click', function () {
                 var selectedEmployees = [];
                 $('input[name="selectedEmployees"]:checked').each(function () {
@@ -77,7 +89,11 @@
                     form.append('<input type="hidden" name="selectedEmployees" value="' + selectedEmployees.join(',') + '">');
                     form.submit();
                 } else {
-                    Swal.fire('No employees selected!', 'Please select at least one employee to export.', 'error');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No employees selected!',
+                        text: 'Please select at least one employee to export.'
+                    });
                 }
             });
         });

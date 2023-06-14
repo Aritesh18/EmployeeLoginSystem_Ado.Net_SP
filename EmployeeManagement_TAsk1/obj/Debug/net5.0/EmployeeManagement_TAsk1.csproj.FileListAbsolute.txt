@@ -157,3 +157,4 @@ D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.csproj.CopyComplete
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.genruntimeconfig.cache
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.csprojAssemblyReference.cache
+D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\bin\Debug\net5.0\Dapper.dll
