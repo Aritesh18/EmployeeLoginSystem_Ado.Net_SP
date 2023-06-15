@@ -1,5 +1,4 @@
-﻿using Dapper;
-using EmployeeManagement_TAsk1.Models;
+﻿using EmployeeManagement_TAsk1.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement_TAsk1.Controllers
 {
- 
+
     public class EmployeeController : Controller
     {
 
@@ -34,190 +33,53 @@ namespace EmployeeManagement_TAsk1.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return View();
+            //    IEnumerable<Employee> employees = GetAllEmployee();
+            //    return View(employees);
+
+            IEnumerable<Employee> employees = GetAllEmployee();
+            string jsonData = JsonConvert.SerializeObject(employees);
+            ViewBag.EmployeeData = jsonData;
+            return View(employees);
         }
-
-        //public IActionResult Index()
-        //{
-        //    //    IEnumerable<Employee> employees = GetAllEmployee();
-        //    //    return View(employees);
-
-        //    IEnumerable<Employee> employees = GetAllEmployee();
-        //    string jsonData = JsonConvert.SerializeObject(employees);
-        //    ViewBag.EmployeeData = jsonData;
-        //    return View(employees);
-        //}
-
-        //public IEnumerable<Employee> GetAllEmployee()
-        //{
-        //    List<Employee> lstEmployee = new List<Employee>();
-        //    using (SqlConnection con = new SqlConnection(connectionString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand("spGetAllEmployee", con);
-        //        cmd.CommandType = CommandType.StoredProcedure;
-        //        con.Open();
-        //        SqlDataReader rdr = cmd.ExecuteReader();
-
-        //        while (rdr.Read())
-        //        {
-        //            Employee employee = new Employee();
-        //            employee.Id = Convert.ToInt32(rdr["Id"]);
-        //            employee.FirstName = rdr["FirstName"].ToString();
-        //            employee.LastName = rdr["LastName"].ToString();
-        //            employee.Email = rdr["Email"].ToString();
-        //            employee.Mobile = rdr["Mobile"].ToString();
-        //            employee.Address = rdr["Address"].ToString();
-
-        //            lstEmployee.Add(employee);
-        //        }
-        //        con.Close();
-        //    }
-        //    return lstEmployee;
-        //}
-        //[HttpPost]
-        //public IActionResult ExportToExcel(int[] selectedEmployees)
-        //{
-        //    IEnumerable<Employee> employees = GetAllEmployee().Where(e => selectedEmployees.Contains(e.Id));
-
-        //    // Create the Excel workbook and worksheet
-        //    var workbook = new ClosedXML.Excel.XLWorkbook();
-        //    var worksheet = workbook.Worksheets.Add("Selected Employees");
-
-        //    // Set column headers
-        //    PropertyInfo[] properties = typeof(Employee).GetProperties();
-        //    for (int i = 0; i < properties.Length; i++)
-        //    {
-        //        worksheet.Cell(1, i + 1).Value = properties[i].Name;
-        //    }
-
-        //    // Add data rows
-        //    int row = 2;
-        //    foreach (var employee in employees)
-        //    {
-        //        for (int i = 0; i < properties.Length; i++)
-        //        {
-        //            var value = properties[i].GetValue(employee);
-        //            worksheet.Cell(row, i + 1).Value = value != null ? value.ToString() : string.Empty;
-        //        }
-        //        row++;
-        //    }
-
-        //    // Set response headers for file download
-        //    using (var memoryStream = new MemoryStream())
-        //    {
-        //        workbook.SaveAs(memoryStream);
-        //        memoryStream.Seek(0, SeekOrigin.Begin);
-        //        return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SelectedEmployees.xlsx");
-        //    }
-        //}
-
-
-
-
-        //public IActionResult ExportSelectedToExcel(int[] selectedEmployees)
-        //{
-        //    IEnumerable<Employee> employees = GetAllEmployee().Where(e => selectedEmployees.Contains(e.Id));
-
-        //    Create the Excel workbook and worksheet
-        //    var workbook = new ClosedXML.Excel.XLWorkbook();
-        //    var worksheet = workbook.Worksheets.Add("Selected Employees");
-
-        //    Set column headers
-        //   PropertyInfo[] properties = typeof(Employee).GetProperties();
-        //    for (int i = 0; i < properties.Length; i++)
-        //    {
-        //        worksheet.Cell(1, i + 1).Value = properties[i].Name;
-        //    }
-
-        //    Add data rows
-        //    int row = 2;
-        //    foreach (var employee in employees)
-        //    {
-        //        for (int i = 0; i < properties.Length; i++)
-        //        {
-        //            var value = properties[i].GetValue(employee);
-        //            worksheet.Cell(row, i + 1).Value = value != null ? value.ToString() : string.Empty;
-        //        }
-        //        row++;
-        //    }
-
-        //    Set response headers for file download
-        //    using (var memoryStream = new MemoryStream())
-        //        {
-        //            workbook.SaveAs(memoryStream);
-        //            memoryStream.Seek(0, SeekOrigin.Begin);
-        //            return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SelectedEmployees.xlsx");
-        //        }
-        //}
-
-        [HttpPost]
-        public IActionResult Getall()
+        public IEnumerable<Employee> GetAllEmployee()
         {
-            try
-            {
-                int draw = Convert.ToInt32(Request.Form["draw"]);
-                int start = Convert.ToInt32(Request.Form["start"]);
-                int length = Convert.ToInt32(Request.Form["length"]);
-                string searchValue = Request.Form["search[value]"].FirstOrDefault();
-                string sortColumn = Request.Form[$"columns[{Request.Form["order[0][column]"]}][name]"].FirstOrDefault();
-                string sortDirection = Request.Form["order[0][dir]"].FirstOrDefault() ?? "asc";
-
-                int totalRecord;
-                int filterRecord;
-                var employees = GetEmployees(searchValue, sortColumn, sortDirection, start, length, out totalRecord, out filterRecord);
-
-                return Json(new
-                {
-                    draw = draw,
-                    recordsTotal = totalRecord,
-                    recordsFiltered = filterRecord,
-                    data = employees
-                });
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        private IEnumerable<Employee> GetEmployees(string searchValue, string sortColumn, string sortDirection, int start, int length, out int totalRecord, out int filterRecord)
-        {
+            List<Employee> lstEmployee = new List<Employee>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@SearchValue", searchValue);
-                parameters.Add("@SortColumn", sortColumn);
-                parameters.Add("@SortDirection", sortDirection);
-                parameters.Add("@Start", start);
-                parameters.Add("@Length", length);
-                parameters.Add("@TotalRecord", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                parameters.Add("@FilterRecord", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                string query = "SELECT * FROM Employee";
 
+                SqlCommand cmd = new SqlCommand(query, con);
                 con.Open();
-                var employees = con.Query<Employee>("sp_GetEmployees", parameters, commandType: CommandType.StoredProcedure);
+               
+                //SqlCommand cmd = new SqlCommand("spGetAllEmployee", con);
+                //cmd.CommandType = CommandType.StoredProcedure;
+              
+                SqlDataReader rdr = cmd.ExecuteReader();
 
-                totalRecord = parameters.Get<int>("@TotalRecord");
-                filterRecord = parameters.Get<int>("@FilterRecord");
+                while (rdr.Read())
+                {
+                    Employee employee = new Employee();
+                    employee.Id = Convert.ToInt32(rdr["Id"]);
+                    employee.FirstName = rdr["FirstName"].ToString();
+                    employee.LastName = rdr["LastName"].ToString();
+                    employee.Email = rdr["Email"].ToString();
+                    employee.Mobile = rdr["Mobile"].ToString();
+                    employee.Address = rdr["Address"].ToString();
 
-                return employees;
+                    lstEmployee.Add(employee);
+                }   
+                con.Close();
             }
+            return lstEmployee;
         }
 
+      
         [HttpPost]
         public IActionResult ExportToExcel(int[] selectedEmployees)
         {
-            string searchValue = ""; // Provide the appropriate search value
-            string sortColumn = ""; // Provide the appropriate sort column
-            string sortDirection = ""; // Provide the appropriate sort direction
-            int start = 0; // Provide the appropriate start value
-            int length = int.MaxValue; // Retrieve all employees for export
+            IEnumerable<Employee> employees = GetAllEmployee().Where(e => selectedEmployees.Contains(e.Id));
 
-            int totalRecord;
-            int filterRecord;
-            IEnumerable<Employee> employees = GetEmployees(searchValue, sortColumn, sortDirection, start, length, out totalRecord, out filterRecord)
-                .Where(e => selectedEmployees.Contains(e.Id));
-
-            // Create the Excel workbook and worksheet
+            // Create the Excel and worksheet
             var workbook = new ClosedXML.Excel.XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Selected Employees");
 
@@ -248,8 +110,7 @@ namespace EmployeeManagement_TAsk1.Controllers
                 return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SelectedEmployees.xlsx");
             }
         }
-
-
+       
         public Employee GetEmployeeById(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -279,12 +140,10 @@ namespace EmployeeManagement_TAsk1.Controllers
             return null;
         }
 
-
-
         public ViewResult Create()
         {
             return View();
-    }
+        }
         [HttpPost]
         public IActionResult Create(Employee employee)
         {
@@ -403,15 +262,15 @@ namespace EmployeeManagement_TAsk1.Controllers
                     }
 
                 }
-            } 
+            }
             ModelState.AddModelError("", "Invalid login attempt");
             return View(user);
         }
         [HttpPost]
-        public ActionResult Logout()   
+        public ActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Employee");
         }
-   }
+    }
 }
