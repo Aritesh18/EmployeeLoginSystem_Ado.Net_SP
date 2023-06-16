@@ -50,10 +50,10 @@ namespace EmployeeManagement_TAsk1.Controllers
 
                 SqlCommand cmd = new SqlCommand(query, con);
                 con.Open();
-               
+
                 //SqlCommand cmd = new SqlCommand("spGetAllEmployee", con);
                 //cmd.CommandType = CommandType.StoredProcedure;
-              
+
                 SqlDataReader rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
@@ -67,13 +67,13 @@ namespace EmployeeManagement_TAsk1.Controllers
                     employee.Address = rdr["Address"].ToString();
 
                     lstEmployee.Add(employee);
-                }   
+                }
                 con.Close();
             }
             return lstEmployee;
         }
 
-      
+
         [HttpPost]
         public IActionResult ExportToExcel(int[] selectedEmployees)
         {
@@ -110,7 +110,7 @@ namespace EmployeeManagement_TAsk1.Controllers
                 return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SelectedEmployees.xlsx");
             }
         }
-       
+
         public Employee GetEmployeeById(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
