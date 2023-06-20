@@ -122,7 +122,6 @@ D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\bin\Debug\net5.
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\bin\Debug\net5.0\runtimes\win-x86\native\sni.dll
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.csprojAssemblyReference.cache
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.GeneratedMSBuildEditorConfig.editorconfig
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.AssemblyInfoInputs.cache
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.AssemblyInfo.cs
@@ -159,3 +158,4 @@ D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\ref\EmployeeManagement_TAsk1.dll
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.pdb
 D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.genruntimeconfig.cache
+D:\CS SOFT SOL\EmployeeManagement_TAsk1\EmployeeManagement_TAsk1\obj\Debug\net5.0\EmployeeManagement_TAsk1.csprojAssemblyReference.cache

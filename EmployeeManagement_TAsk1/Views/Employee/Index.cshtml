@@ -16,87 +16,86 @@
 <table id="employeeTable" class="table table-bordered table-striped table-responsive">
 </table>
 
-@section scripts{
-
+@section scripts {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-       $(document).ready(function () {
-    var dataSet = @Html.Raw(Json.Serialize(Model));
+        $(document).ready(function () {
+            var dataSet = @Html.Raw(Json.Serialize(Model));
 
-    var employeeTable = $('#employeeTable').DataTable({
-        data: dataSet,
-        columns: [
-            {
-                title: '',
-                data: null,
-                orderable: false,
-                className: 'select-checkbox',
-                render: function (data, type, row) {
-                    return '<input type="checkbox" class="employeeCheckbox" value="' + row.id + '">';
-                }
-            },
-            { title: 'First Name', data: 'firstName' },
-            { title: 'Last Name', data: 'lastName' },
-            { title: 'Email', data: 'email' },
-            { title: 'Mobile', data: 'mobile' },
-            { title: 'Address', data: 'address' },
-            {
-                title: 'Actions',
-                data: null,
-                render: function (data, type, row) {
-                    return '<a href="/Employee/Update/' + row.id + '">Update</a> | ' +
-                        '<a href="/Employee/Delete/' + row.id + '">Delete</a>';
-                }
-            }
-        ],
-        select: {
-            style: 'multi'
-        },
-        order: [[1, 'asc']],
-        pageLength: 10,
-        searching: true,
-        columnDefs: [
-            { targets: [1, 2, 3], searchable: true },
-            { targets: [4, 5], searchable: false, orderable: true },
-            { targets: '_all', orderable: false },
-            { targets: [4, 5], orderable: true }
-        ]
-    });
-
-    $('#selectAllCheckbox').on('change', function () {
-        var isChecked = $(this).prop('checked');
-        $('.employeeCheckbox').prop('checked', isChecked);
-    });
-
-    $('#exportToExcel').on('click', function () {
-        var selectedEmployees = [];
-        $('.employeeCheckbox:checked').each(function () {
-            selectedEmployees.push($(this).val());
-        });
-
-        if (selectedEmployees.length > 0) {
-            var url = '@Url.Action("ExportToExcel", "Employee")';
-            var form = $('<form action="' + url + '" method="POST" enctype="multipart/form-data"></form>');
-
-            for (var i = 0; i < selectedEmployees.length; i++) {
-                form.append('<input type="hidden" name="selectedEmployees" value="' + selectedEmployees[i] + '">');
-            }
-
-            $('body').append(form);
-            form.submit();
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'No employees selected!',
-                text: 'Please select at least one employee to export.',
+            var employeeTable = $('#employeeTable').DataTable({
+                data: dataSet,
+                columns: [
+                    {
+                        title: '',
+                        data: null,
+                        orderable: false,
+                        className: 'select-checkbox',
+                        render: function (data, type, row) {
+                            return '<input type="checkbox" class="employeeCheckbox" value="' + row.id + '">';
+                        }
+                    },
+                    { title: 'First Name', data: 'firstName' },
+                    { title: 'Last Name', data: 'lastName' },
+                    { title: 'Email', data: 'email' },
+                    { title: 'Mobile', data: 'mobile' },
+                    { title: 'Address', data: 'address' },
+                    {
+                        title: 'Actions',
+                        data: null,
+                        render: function (data, type, row) {
+                            return '<a href="/Employee/Update/' + row.id + '">Update</a> | ' +
+                                '<a href="/Employee/Delete/' + row.id + '">Delete</a>';
+                        }
+                    }
+                ],
+                select: {
+                    style: 'multi'
+                },
+                order: [[1, 'asc']],
+                pageLength: 10,
+                searching: true,
+                columnDefs: [
+                    { targets: [1, 2, 3], searchable: true },
+                    { targets: [4, 5], searchable: false, orderable: true },
+                    { targets: '_all', orderable: false },
+                    { targets: [4, 5], orderable: true }
+                ]
             });
-        }
-    });
 
-  $('#exportToCSV').on('click', function () {
+            $('#selectAllCheckbox').on('change', function () {
+                var isChecked = $(this).prop('checked');
+                $('.employeeCheckbox').prop('checked', isChecked);
+            });
+
+            $('#exportToExcel').on('click', function () {
+                var selectedEmployees = [];
+                $('.employeeCheckbox:checked').each(function () {
+                    selectedEmployees.push($(this).val());
+                });
+
+                if (selectedEmployees.length > 0) {
+                    var url = '@Url.Action("ExportToExcel", "Employee")';
+                    var form = $('<form action="' + url + '" method="POST" enctype="multipart/form-data"></form>');
+
+                    for (var i = 0; i < selectedEmployees.length; i++) {
+                        form.append('<input type="hidden" name="selectedEmployees" value="' + selectedEmployees[i] + '">');
+                    }
+
+                    $('body').append(form);
+                    form.submit();
+                } else {
+                                        Swal.fire({
+                        icon: 'error',
+                        title: 'No employees selected!',
+                        text: 'Please select at least one employee to export.',
+                    });
+                }
+            });
+
+            $('#exportToCSV').on('click', function () {
                 var selectedEmployees = [];
                 $('.employeeCheckbox:checked').each(function () {
                     selectedEmployees.push($(this).val());
@@ -123,5 +122,4 @@
         });
     </script>
 }
-
 
