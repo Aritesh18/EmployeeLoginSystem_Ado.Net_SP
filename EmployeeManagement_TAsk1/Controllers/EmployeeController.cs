@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement_TAsk1.Controllers
@@ -72,7 +73,22 @@ namespace EmployeeManagement_TAsk1.Controllers
             }
             return lstEmployee;
         }
+        [HttpPost]
+        public IActionResult ExportToCSV(int[] selectedEmployees)
+        {
+            IEnumerable<Employee> employees = GetAllEmployee().Where(e => selectedEmployees.Contains(e.Id));
 
+            // Create the CSV content
+            string csvContent = "First Name,Email,Address\n";
+            foreach (var employee in employees)
+            {
+                csvContent += $"{employee.FirstName},{employee.Email},{employee.Address}\n";
+            }
+
+            // Set response headers for file download
+            byte[] csvBytes = Encoding.UTF8.GetBytes(csvContent);
+            return File(csvBytes, "text/csv", "SelectedEmployees.csv");
+        }
 
         [HttpPost]
         public IActionResult ExportToExcel(int[] selectedEmployees)

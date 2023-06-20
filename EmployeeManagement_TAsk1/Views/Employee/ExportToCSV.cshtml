@@ -1,0 +1,16 @@
+﻿@model int[]
+
+<h2>Export to CSV</h2>
+
+@using (Html.BeginForm("ExportToCSV", "Employee", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.Label("Selected Employees:")
+        <br />
+        @foreach (var employeeId in Model)
+        {
+            <input type="hidden" name="selectedEmployees" value="@employeeId" />
+        }
+        <button type="submit" class="btn btn-primary">Export to CSV</button>
+    </div>
+}
